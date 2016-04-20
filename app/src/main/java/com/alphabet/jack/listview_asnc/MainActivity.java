@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 简单的小demo，作用于分页
+ * 缺点是，无法控制每一页的数据量是多少个
  * ListView分页加载数据
  */
 public class MainActivity extends Activity {
@@ -56,7 +58,7 @@ public class MainActivity extends Activity {
         }
 
         /**
-         * @param view
+         * @param view listView的对象
          * @param firstVisibleItem 可见的第一个
          * @param visibleItemCount 可见的数量
          * @param totalItemCount 当前总数量
