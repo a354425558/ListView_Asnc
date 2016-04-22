@@ -13,11 +13,26 @@ public class DataBean {
      * @param maxResult 最大数据
      * @return
      */
-    public static List<String> getListData(int offset,int maxResult){//分页
+    public static List<String> getListData_UP(int offset,int maxResult){//分页
         List<String> listData = new ArrayList<String>();
-        for (int i = 0; i <20 ; i++) {
-            listData.add("item的数据是:" + i);
+        for (int i = 0; i <8 ; i++) {
+            listData.add("上拉数据:" + i);
         }
         return listData;
     }
+
+    /**
+     * 下拉数据
+     * @param offset
+     * @param maxResult
+     * @return
+     */
+    public static List<String> getListData_DOWN(int offset,int maxResult){//分页
+        List<String> listData = new ArrayList<String>();
+        for (int i = 0; i < 8 ; i++) {
+            listData.add("下拉数据:" + i);
+        }
+        return listData;
+    }
+
 }

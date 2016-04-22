@@ -20,34 +20,34 @@ import java.util.List;
 /**
  * 分页加载
  */
-public class MainActivity extends Activity implements PaginationListView.OnLoadListener {
+public class MainActivity extends Activity implements RefreshListView.OnRefreshListener {
 
-    PaginationListView listView;
+    RefreshListView listView;
     List<String> data = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
     private int totalPage = 5;//总共有多少页
-    private int nummber = DataBean.getListData(0,20).size()/totalPage;//每次获取多少条数据
-    private boolean isFinish = true;
+    private int nummber = DataBean.getListData_DOWN(0,20).size()/totalPage;//每次获取多少条数据
 
+    private static final int UP = 1;
+    private static final int DOWN = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (PaginationListView)findViewById(R.id.listView1);
-        listView.setOnLoadListener(this);
+        listView = (RefreshListView)findViewById(R.id.listView1);
+        listView.setOnRefreshListener(this);
         showListView();
     }
 
     private void showListView(){
         if (arrayAdapter == null){
             arrayAdapter = new ArrayAdapter<String>(MainActivity.this,
-                    R.layout.item,R.id.text, DataBean.getListData(0,1) );
+                    R.layout.item,R.id.text, DataBean.getListData_UP(0,1) );
             listView.setAdapter(arrayAdapter);
         }else
         arrayAdapter.notifyDataSetChanged();
-
 
     }
 
@@ -56,17 +56,42 @@ public class MainActivity extends Activity implements PaginationListView.OnLoadL
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if (msg.what == 100){
-                listView.loadComplete();
-                for (String string: DataBean.getListData(0,1)) {
-                    arrayAdapter.add(string);
-                }
-                arrayAdapter.notifyDataSetChanged();
-                isFinish = true;
+            switch (msg.what){
+                case UP:
+                    listView.loadComplete();
+                    for (String string: DataBean.getListData_UP(0,1)) {
+                        arrayAdapter.add(string);
+                    }
+                    arrayAdapter.notifyDataSetChanged();
 
+                    break;
+                case DOWN:
+                    listView.refreshComplete();
+                    arrayAdapter = new ArrayAdapter<String>(MainActivity.this,
+                            R.layout.item,R.id.text, DataBean.getListData_DOWN(0,1) );
+                    listView.setAdapter(arrayAdapter);
+
+                    break;
             }
+
         }
     };
+
+    @Override
+    public void onRefresh() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.sendMessage(handler.obtainMessage(DOWN,DataBean.getListData_DOWN(0,1)));
+
+            }
+        }).start();
+    }
 
     @Override
     public void onLoad() {
@@ -78,7 +103,7 @@ public class MainActivity extends Activity implements PaginationListView.OnLoadL
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-              handler.sendMessage(handler.obtainMessage(100,DataBean.getListData(0,1)));
+              handler.sendMessage(handler.obtainMessage(UP,DataBean.getListData_UP(0,1)));
 
             }
         }).start();
