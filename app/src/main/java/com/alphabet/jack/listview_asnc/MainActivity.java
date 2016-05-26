@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ListView分页加载数据
+ *
+ * ListView分页加载数据(只有分页加载,没有下拉刷新)
  */
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
 
