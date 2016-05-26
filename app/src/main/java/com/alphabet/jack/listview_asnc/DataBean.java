@@ -15,7 +15,7 @@ public class DataBean {
      */
     public static List<String> getListData(int offset,int maxResult){//分页
         List<String> listData = new ArrayList<String>();
-        for (int i = 0; i <60 ; i++) {
+        for (int i = 0; i <10 ; i++) {
             listData.add("item的数据是:" + i);
         }
         return listData;

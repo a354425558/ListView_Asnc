@@ -1,6 +1,7 @@
 package com.alphabet.jack.listview_asnc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * ListView分页加载数据
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
 
     ListView listView;
     List<String> data =  new ArrayList<>();
@@ -40,6 +42,8 @@ public class MainActivity extends Activity {
         listView.addFooterView(foot);
         listView.setAdapter(arrayAdapter);
         listView.removeFooterView(foot);
+
+        listView.setOnItemClickListener(this);
 
     }
     private int totalPage = 5;//总共有多少页
@@ -119,4 +123,10 @@ public class MainActivity extends Activity {
             }
         }
     };
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, AdActivity.class);
+        startActivity(intent);
+    }
 }
